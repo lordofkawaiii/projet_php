@@ -62,7 +62,7 @@ class RSS {
 
 			// Modifie cette nouvelle avec l'information téléchargée
 			$nouvelle->update ( $node );
-
+			$nouvelle->downloadImage ( $node->getElementsByTagName ( 'enclosure' )->item ( 0 ), $i );
 			$news [$i] = $nouvelle;
 
 			$i ++;

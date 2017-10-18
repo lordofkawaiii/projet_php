@@ -31,6 +31,20 @@ class nouvelle {
 	function getUrlImage() {
 		return $this->urlImage;
 	}
+	// $item est l'url de l'image à telechargé et $imageID est le titre du flux de l'image
+	function downloadImage(DOMElement $item, $imageId) {
+		// On suppose que $node est un objet sur le noeud 'enclosure' d'un flux RSS
+		// On tente d'accéder à l'attribut 'url'
+		$item = $item->attributes->getNamedItem ( 'url' );
+		if ($item != NULL) {
+			// L'attribut url a été trouvé : on récupère sa valeur, c'est l'URL de l'image
+			$url = $item->nodeValue;
+			// On construit un nom local pour cette image : on suppose que $nomLocalImage contient un identifiant unique
+			$this->image = 'images/' . $imageId . '.jpg';
+			// On télécharge l'image à l'aide de son URL, et on la copie localement.
+			file_put_contents ( $this->image, file_get_contents ( $url ) );
+		}
+	}
 
 	// Charge les attributs de la nouvelle avec les informations du noeud XML
 	function update(DOMElement $item) {
@@ -47,4 +61,4 @@ class nouvelle {
 		}
 	}
 }
-
+?>
