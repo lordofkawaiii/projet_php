@@ -47,6 +47,13 @@ class DAO {
 		return $tab;
 	}
 
+  function readAllUrlFromRSS(){
+    $sql = 'SELECT url FROM RSS';
+    $res = $this->db->query ( $sql );
+    $tab = $res->fetchAll ( $res, PDO::FETCH_CLASS, "RSS" );
+		return $tab;
+  }
+
 	// Met à jour un flux
 	function updateRSS(RSS $rss) {
 		// Met à jour uniquement le titre et la date
