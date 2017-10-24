@@ -94,5 +94,12 @@ class DAO {
 			die ( "PDO Error :" . $e->getMessage () );
 		}
 	}
+
+  function selectAllNouvelle(){
+    $sql = 'SELECT * FROM nouvelle';
+    $res = $this->db->query ( $sql );
+		$tab = $res->fetchAll ( $res, PDO::FETCH_CLASS, "nouvelle" );
+		return $tab;
+  }
 }
 ?>
