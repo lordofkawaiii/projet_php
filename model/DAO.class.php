@@ -95,11 +95,19 @@ class DAO {
 		}
 	}
 
-  function selectAllNouvelle(){
-    $sql = 'SELECT * FROM nouvelle';
+  function readAllNouvelle($id){
+    $sql = 'SELECT * FROM nouvelle WHERE RSS_id='$id'';
     $res = $this->db->query ( $sql );
 		$tab = $res->fetchAll ( $res, PDO::FETCH_CLASS, "nouvelle" );
 		return $tab;
   }
+}
+
+function readNouvelle($id){
+	$sql = 'SELECT * FROM nouvelle WHERE id='$id'';
+	$res = $this->db->query ( $sql );
+	$tab = $res->fetchAll ( $res, PDO::FETCH_CLASS, "nouvelle" );
+	return $tab;
+}
 }
 ?>
