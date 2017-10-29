@@ -39,6 +39,27 @@ class DAO {
 			return $rss;
 		}
 	}
+	function deleteRSS($titre) {
+		$q = "select * FROM rss WHERE titre LIKE '%$titre%'";
+		$r = $this->db->query ( $q );
+		$resif = $r->fetchall ();
+		if (! (empty ( $resif ))) {
+			try {
+				$q = "DELETE FROM nouvelle WHERE RSS_id LIKE '%$titre%'";
+				$r = $this->db->exec ( $q );
+				if ($r == 0) {
+					die ( "createRSS error: no rss deleted2\n" );
+				}
+				$q = "DELETE FROM RSS WHERE titre LIKE '%$titre%'";
+				$r = $this->db->exec ( $q );
+				if ($r == 0) {
+					die ( "createRSS error: no rss deleted1\n" );
+				}
+			} catch ( PDOException $e ) {
+				die ( "PDO Error :" . $e->getMessage () );
+			}
+		}
+	}
 
 	// Acces à un objet RSS à partir de son URL
 	function readRSSfromURL($url) {
@@ -64,7 +85,12 @@ class DAO {
 		$tab = $res->fetchAll ();
 		return $tab;
 	}
-
+	function readNewsFromKey($key) {
+		$sql = "SELECT * FROM nouvelle WHERE description like '%$key%";
+		$res = $this->db->query ( $sql );
+		$tab = $res->fetchAll ();
+		return $tab;
+	}
 	// Met à jour un flux
 	function updateRSS(RSS $rss) {
 		// Met à jour uniquement le titre et la date

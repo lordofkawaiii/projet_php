@@ -42,7 +42,6 @@ class nouvelle {
 			// On construit un nom local pour cette image : on suppose que $nomLocalImage contient un identifiant unique
 			$this->image = '../model/images/' . $imageId . '.jpg';
 			// On télécharge l'image à l'aide de son URL, et on la copie localement.
-			chmod ( $this->image, 01755 );
 			file_put_contents ( $this->image, file_get_contents ( $url ) );
 		}
 	}

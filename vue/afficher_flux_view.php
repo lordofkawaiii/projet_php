@@ -9,11 +9,11 @@
 </head>
 <body>
 <form action="afficher_flux.php">
-<table>
+<table align="center">
 <tr>
-<td>les sites:</td>
-<td>les liens vers le flux RSS:</td>
-<td>consulter les dernieres news</td>
+<th>les sites:</th>
+<th>les liens vers le flux RSS:</th>
+<th>consulter les dernieres news</th>
 </tr>
 <?php
 foreach ( $data ['RSS'] as $url ) {
@@ -27,6 +27,16 @@ foreach ( $data ['RSS'] as $url ) {
 }
 ?>
 </table>
+<p>
+  si vous voulez rajouter un flux:<br>
+  <input type="text" name="RSSp" placeholder="inserez un lien de flux rss"><br>
+  <input type="submit">
+</p>
+<p>
+  si vous voulez supprimer un flux:<br>
+  <input type="text" name="RSSm" placeholder="inserez un titre de flux rss"><br>
+  <input type="submit">
+</p>
 </form>
 </body>
 </html>

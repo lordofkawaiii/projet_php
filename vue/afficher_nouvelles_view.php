@@ -12,12 +12,15 @@ use projet\model\nouvelle;
 </head>
 <body>
 <form action="afficher_flux.php">
+<?php
+print_r ( "<td><input align='center' type='submit' name='flux' value='retour'></td>" );
+?>
 <table>
 <tr>
-<td>le titre</td>
-<td>la description</td>
-<td>la date</td>
-<td>acceder au contenu (site)</td>
+<th>le titre</th>
+<th>la description</th>
+<th>la date</th>
+<th>acceder au contenu (site)</th>
 </tr>
 <?php
 $nouvelles = new nouvelle ();
@@ -31,6 +34,9 @@ foreach ( $data ['flux'] as $nouvelles ) {
 }
 ?>
 </table>
+<?php
+print_r ( "<td><input align='center' type='submit' name='flux' value='retour'></td>" );
+?>
 </form>
 </body>
 </html>
