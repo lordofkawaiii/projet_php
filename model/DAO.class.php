@@ -1,14 +1,14 @@
 <?php
-use projet\model\nouvelle;
 use projet\model\RSS;
+use projet\model\nouvelle;
 class DAO {
 	private $db; // L'objet de la base de donnée
 
 	// Ouverture de la base de donnée
 	function __construct() {
-		$dsn = 'sqlite:rss.db'; // Data source name
+		$dsn = 'sqlite:../model/rss.db'; // Data source name
 		try {
-			$this->db = new PDO ( $dsn );
+			$this->db = new PDO ( 'sqlite:../model/rss.db' );
 		} catch ( PDOException $e ) {
 			exit ( "Erreur ouverture BD : " . $e->getMessage () );
 		}
@@ -24,7 +24,8 @@ class DAO {
 		$rss = $this->readRSSfromURL ( $url );
 		if ($rss == NULL) {
 			try {
-				$q = "INSERT INTO RSS (url) VALUES ('$url')";
+				$titre = explode ( '.', $url );
+				$q = "INSERT INTO RSS (titre,url) VALUES ('$titre[1]','$url')";
 				$r = $this->db->exec ( $q );
 				if ($r == 0) {
 					die ( "createRSS error: no rss inserted\n" );
@@ -41,18 +42,28 @@ class DAO {
 
 	// Acces à un objet RSS à partir de son URL
 	function readRSSfromURL($url) {
-		$sql = 'SELECT * FROM RSS WHERE url=' . $url . '';
+		$sql = "SELECT * from RSS WHERE url='$url'";
+		$res = array ();
 		$res = $this->db->query ( $sql );
-		$tab = $res->fetchAll ( $res, PDO::FETCH_CLASS, "RSS" );
+		if ($res) {
+			$tab = $res->fetchAll ();
+		} else {
+			$tab = null;
+		}
 		return $tab;
 	}
-
-  function readAllUrlFromRSS(){
-    $sql = 'SELECT url FROM RSS';
-    $res = $this->db->query ( $sql );
-    $tab = $res->fetchAll ( $res, PDO::FETCH_CLASS, "RSS" );
+	function readAllUrlFromRSS() {
+		$sql = 'SELECT * FROM RSS';
+		$res = $this->db->query ( $sql );
+		$tab = $res->fetchAll ();
 		return $tab;
-  }
+	}
+	function readNewsFromRss($url) {
+		$sql = "SELECT * FROM nouvelle WHERE RSS_id='$url'";
+		$res = $this->db->query ( $sql );
+		$tab = $res->fetchAll ();
+		return $tab;
+	}
 
 	// Met à jour un flux
 	function updateRSS(RSS $rss) {
@@ -84,11 +95,17 @@ class DAO {
 	// Crée une nouvelle dans la base à partir d'un objet nouvelle
 	// et de l'id du flux auquelle elle appartient
 	function createNouvelle(nouvelle $n, $RSS_id) {
-		$sql = 'INSERT INTO nouvelle(titre,RSS_id) VALUES (' . $n . ',' . $RSS_id . ')';
 		try {
+			$nouv = $n->getTitre ();
+			$sql = "SELECT * FROM nouvelle WHERE titre='$nouv'";
 			$r = $this->db->exec ( $sql );
-			if ($r == 0) {
-				die ( "insertNouvelle error: no nouvelle insert\n" );
+			if ($r != 0) {
+				$date = $n->getDate ();
+				$desc = $n->getDescription ();
+				$url = $n->getUrl ();
+				$img = $n->getUrlImage ();
+				$sql = "INSERT INTO nouvelle(date,titre,description,url,image,RSS_id) VALUES ('$date','$nouv','$desc','$url','$img','$RSS_id')";
+				$r = $this->db->exec ( $sql );
 			}
 		} catch ( PDOException $e ) {
 			die ( "PDO Error :" . $e->getMessage () );
