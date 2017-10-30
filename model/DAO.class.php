@@ -6,9 +6,9 @@ class DAO {
 
 	// Ouverture de la base de donnée
 	function __construct() {
-		$dsn = 'sqlite:../model/rss.db'; // Data source name
+		$dsn = 'sqlite:../data/rss.db'; // Data source name
 		try {
-			$this->db = new PDO ( 'sqlite:../model/rss.db' );
+			$this->db = new PDO ( 'sqlite:../data/rss.db' );
 		} catch ( PDOException $e ) {
 			exit ( "Erreur ouverture BD : " . $e->getMessage () );
 		}
