@@ -25,6 +25,6 @@ if(isset($erreur)){
   include("../vue/error_view.php");
 }elseif($tabPres) {
   $data['nouvelle'] = $nouvelle;
-  include("../vue/afficher_nouvelles_view.php");
+  include("../vue/afficher_nouvelle_view.php");
 }
  ?>
