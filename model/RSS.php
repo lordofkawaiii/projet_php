@@ -13,6 +13,7 @@ class RSS {
 	// Contructeur
 	function __construct($url) {
 		$this->url = $url;
+		$this->update ();
 	}
 
 	// Fonctions getter
